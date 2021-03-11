@@ -1,0 +1,83 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block title %} Register {% endblock %}
+
+{% block style %} {% static 'auctions/login.css' %} {% endblock %}
+
+{% block body %}
+
+    <div class="login-container">
+        <form class="form-signin needs-validation" novalidate action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <div class="text-center mb-4">
+                <img class="mb-4" src="{% static 'auctions/logo.svg' %}" alt="Logo" width="72" height="72">
+                <h1 class="h3 mb-3 title-thin text-dark-red">poshbid</h1>
+            </div>
+    
+            <div class="form-label-group">
+                <input type="text" id="inputUsername" class="form-control {% if user_taken %}input-error{% endif %}" name="username" placeholder="Username" value="{{username}}" required autofocus>
+                <label for="inputUsername">Username</label>
+                <div class="valid-feedback"></div>
+                {% if user_taken %}
+                <div class="input-error-message">
+                    {{user_taken}}
+                </div>
+                {% else %}
+                <div class="invalid-feedback">
+                    Please choose a username.
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-label-group">
+                <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" value="{{email}}" required>
+                <label for="inputEmail">Email address</label>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">
+                    Please provide a valid email.
+                </div>
+            </div>
+    
+            <div class="form-label-group">
+                <input type="password" id="inputPassword" class="form-control {% if passwords_unmatched %}input-error{% endif %}" name="password" placeholder="Password" value="{{password}}" required>
+                <label for="inputPassword">Password</label>
+                <div class="valid-feedback"></div>
+                {% if passwords_unmatched %}
+                <div class="input-error-message">
+                    {{passwords_unmatched}}
+                </div>
+                {% else %}
+                <div class="invalid-feedback">
+                    Please provide a password.
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-label-group">
+                <input type="password" id="inputConfirmation" class="form-control {% if passwords_unmatched %}input-error{% endif %}" name="confirmation" placeholder="Confirm Password" value="{{confirmation}}" required {% if passwords_unmatched %}autofocus{% endif %}>
+                <label for="inputConfirmation">Confirm Password</label>
+                <div class="valid-feedback"></div>
+                {% if passwords_unmatched %}
+                <div class="input-error-message">
+                    {{passwords_unmatched}}
+                </div>
+                {% else %}
+                <div class="invalid-feedback">
+                    Please provide a password.
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="form-label-group">
+                <input class="btn bg-dark-red btn-lg btn-block text-white" type="submit" value="Register">
+            </div>
+
+            <p>Already have an account? <a href="{% url 'login' %}">Log In here</a></p>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block script %}<script src="{% static 'auctions/register.js' %}"></script>{% endblock %}

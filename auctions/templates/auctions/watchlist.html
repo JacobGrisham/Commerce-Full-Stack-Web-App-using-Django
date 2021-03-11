@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Watchlist{% endblock %}
+
+{% block body %}
+    <h2 class="headers text-dark-red mt-5 mb-3">These Look Interesting</h2>
+
+    {% for item in watching %}
+      {% if item and item.active == 1 %}
+        <div class="list-group mb-3">
+            <a href="{% url 'listing' item.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+              <div class="d-flex w-100 justify-content-around">
+                <h5 class="mb-1">{{ item.title }}</h5>
+                <p class="mb-1">${{ item.highestbid }}</p>
+                <small>{{ item.timestamp }}</small>
+              </div>
+            </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+{% endblock %}

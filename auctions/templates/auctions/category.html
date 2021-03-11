@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Filtered Results{% endblock %}
+
+{% block body %}
+    <h2 class="headers text-dark-red mt-5 mb-3">Filtered Results</h2>
+
+    <div class="row justify-content-around">
+        {% for item in category %}
+            <div class="col-md-5">
+                <a href="{% url 'listing' item.id %}">
+                    <div class="card mb-5">
+                        <div class="card-container">
+                            <img class="card-img-top" src="{{ item.photo_url }}" alt="Item for Sale">
+                        </div>
+                        <div class="card-body index-card-body">
+                            <h5 class="card-title index-card-title">{{ item.title }} ${{ item.highestbid }}</h5>
+                        </div>
+                        <div class="overlay">
+                            <div class="text-overlay">{{ item.description }}</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+        {% for item in gender %}
+        <div class="col-md-5">
+            <a href="{% url 'listing' item.id %}">
+                <div class="card mb-5">
+                    <div class="card-container">
+                        <img class="card-img-top" src="{{ item.photo_url }}" alt="Item for Sale">
+                    </div>
+                    <div class="card-body index-card-body">
+                        <h5 class="card-title index-card-title">{{ item.title }} ${{ item.highestbid }}</h5>
+                    </div>
+                    <div class="overlay">
+                        <div class="text-overlay">{{ item.description }}</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+    </div> 
+
+{% endblock %}

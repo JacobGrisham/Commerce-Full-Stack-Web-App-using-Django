@@ -1,0 +1,126 @@
+{% extends "auctions/layout.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Listing{% endblock %}
+
+{% block body %}
+  <h2 class="headers text-dark-red mt-5 mb-3">A CLoser Look</h2>
+
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+    {% endif %}
+
+    {% if user.is_authenticated and winner.user_id == user.id and listing.active == 0 %}
+    <div class="alert alert-success" role="alert">Congratulations! You've won this auction!</div>
+    {% endif %}
+
+    <div class="col-md-8">
+      <div class="card mb-5">
+        <div class="card-body">
+          <h3 class="card-title">{{ listing.title }} {% if listing.highestbid > listing.price %} ${{listing.highestbid}} {% else %} ${{ listing.price }} {% endif %}</h3>
+          <small class="card-text">Posted by <a href="#" class="badge bg-dark-red text-white">{{ listing.user }}</a> on {{ listing.timestamp }}</small>
+          <img class="rounded img-fluid mt-3" src="{{ listing.photo_url }}" alt="Item for Sale">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item text-muted">
+              <small class="mr-3">Gender:
+                {% for gender in genders %}
+                  {% if listing.gender == gender.0 %}
+                    {{ gender.1 }}
+                  {% endif %}
+                {% endfor %}
+              </small>
+              <small class="mr-3">Size: {{ listing.size }}</small>
+              <small>Category:
+                {% for category in categories %}
+                  {% if listing.category == category.0 %}
+                    {{ category.1 }}
+                  {% endif %}
+                {% endfor %}
+              </small>
+            </li>
+            <li class="list-group-item">{{ listing.description }}</li>
+          </ul>
+          {% if user.is_authenticated  %}
+            {% if user != listing.user and listing.active == 1 %}
+            <form action="{% url 'listing' listing.id %}" method="POST">  
+              {% csrf_token %}          
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
+                </div>
+                  <input type="number" class="form-control" aria-label="Bid Amount in U.S. Dollars" name="amount"
+                  {% if listing.highestbid > listing.price %}
+                  min="{{listing.highestbid}}" value="{{listing.highestbid}}"
+                  {% else %}
+                  min="{{ listing.price }}" value="{{listing.price}}"
+                  {% endif %}
+                  >
+                  <div class="input-group-append">
+                      <button class="btn bg-dark-red text-white" type="submit" name="bid">Bid</button>
+                  </div>
+              </div>
+            </form>
+            {% endif %}
+            <small class="text-muted mr-3">Original Price: ${{ listing.price }}</small>
+            <small class="text-muted mr-3">{{ total_bids }} bids total</small>
+            <small class="text-dark-red mr-3">
+              {% if user != listing.user %}
+                {% if winner.user_id == user.id %}
+                Congratulations, you're bid is the highest!
+                {% elif user.id == bids.user_id %}
+                Unfortunately, your bid is currently too low to win this auction
+                {% endif %}
+              {% endif %}
+            </small>
+            {% if user == listing.user %}
+              {% if listing.active == 1 %}
+              <form class="input-group" action="{% url 'listing' listing.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-block btn-outline-dark-red mt-3" name="close">Close This Auction</button>
+              </form>
+              {% endif %}
+            {% else %}
+              {% if watching and watching.active == 1 %}
+                <form class="input-group" action="{% url 'listing' listing.id %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-outline-dark-red mt-3" name="unwatch">Remove from Watchlist</button>
+                </form>
+              {% elif not watching or watching.active == 0 %}
+                <form class="input-group" action="{% url 'listing' listing.id %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-outline-dark-red mt-3" name="watch">Add to Watchlist</button>
+                </form>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if comments %}
+    <div class="col-md-8 mb-3">
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          {% for comment in comments %}
+            <li class="list-group-item">
+              <a href="#" class="badge bg-dark-red text-white">{{comment.user}}</a>
+              <p>{{comment.comment}}</p>
+              <small class="text-muted">{{comment.timestamp}}</small>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <div class="col-md-8">
+        <form action="{% url 'listing' listing.id %}" method="POST">
+          {% csrf_token %}
+          {{ comment_form|crispy }}
+          <button type="submit" class="btn btn-outline-dark-red" name="comment">Post</button>
+        </form>
+      </div>
+    {% endif %}
+{% endblock %}

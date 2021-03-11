@@ -1,0 +1,173 @@
+/* ------------------------------------------- */
+/* BASE */
+/* ------------------------------------------- */
+
+body {
+    padding: 10px;
+    font-family: 'Open Sans', sans-serif;
+    overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+.text-dark-red {
+    color: rgb(130, 36, 50) !important;
+}
+.text-dark-red:hover,
+.text-dark-red:focus {
+    color: rgb(90, 10, 10) !important;
+}
+
+.bg-dark-red {
+    background-color: rgb(130, 36, 50) !important;
+    border-color: rgb(130, 36, 50) !important;
+}
+.bg-dark-red:hover,
+.bg-dark-red:focus {
+    background-color: rgb(90, 10, 10) !important;
+    border-color: rgb(130, 36, 50) !important;
+}
+
+.btn-outline-dark-red {
+    border-color: rgb(130, 36, 50) !important;
+    color: rgb(130, 36, 50) !important;
+}
+.btn-outline-dark-red:hover,
+.btn-outline-dark-red:focus {
+    background-color: rgb(90, 10, 10) !important;
+    color: white !important;
+}
+
+.title-thin {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.headers {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.logo {
+    height: auto;
+    width: 3rem;
+    padding: 0;
+}
+
+/* ------------------------------------------- */
+/* NAVBAR */
+/* ------------------------------------------- */
+
+.navbar {
+    border-bottom: 1px solid lightgrey;
+}
+
+.navbar-nav {
+    flex-direction: column;
+}
+
+@media (max-width: 767.98px) {
+    .offcanvas-collapse {
+        z-index: 100;
+        position: fixed;
+        top: 90px; /* Height of navbar */
+        bottom: 0;
+        width: 100%;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        overflow-y: auto;
+        background-color: var(--white);
+        transition: -webkit-transform .3s ease-in-out;
+        transition: transform .3s ease-in-out;
+        transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+    }
+    .offcanvas-collapse.open {
+        -webkit-transform: translateX(-1rem);
+        transform: translateX(-1rem);
+        /* Account for horizontal padding on navbar */
+    }
+}
+
+.dropdown-item:active {
+    background-color: rgb(90, 10, 10) !important;
+}
+
+/* ------------------------------------------- */
+/* CARDS ON ACTIVE LISTINGS PAGE */
+/* ------------------------------------------- */
+
+.index-card-title {
+    color: black;
+    transition: .6s;
+}
+
+.unsplash {
+    width: 100vw;
+    height: auto;
+    object-fit: cover;
+}
+
+.index-card-body {
+    height: auto;
+    width: auto;
+    background-size: 200% 100%;
+    background-image: linear-gradient(to right,white 50%, rgb(130, 36, 50) 50%);
+    transition: background-position .3s ease-out;
+    -webkit-transition: background-position .3s ease-out;
+    -moz-transition: background-position .3s ease-out;
+}
+
+.card-container {
+    overflow: hidden; /* hide the overflow */
+}
+
+.card-img-top {
+    transition: 5s ease;
+    backface-visibility: hidden;
+}
+
+.overlay {
+    opacity: 0;
+    transition: .7s ease;
+}
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+/* Hovering Over Card on Index Page */
+
+a:hover {
+    text-decoration: none;
+}
+
+.card:hover .card-img-top {
+    filter: blur(4px) brightness(85%);
+    transform:scale(1.2);
+    -ms-transform:scale(1.2); /* IE 9 */
+    -moz-transform:scale(1.2); /* Firefox */
+    -webkit-transform:scale(1.2); /* Safari and Chrome */
+    -o-transform:scale(1.2); /* Opera */
+}
+
+.card:hover .overlay {
+    opacity: 1;
+}
+
+.card:hover .index-card-body {
+    background-position: 100% 0;
+}
+
+.card:hover .index-card-title {
+    color: white;
+}

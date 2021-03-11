@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}My Listings{% endblock %}
+
+{% block body %}
+    <h2 class="headers text-dark-red mt-5 mb-3">Past and Present Items</h2>
+
+    {% for item in inventory %}
+    <div class="list-group mb-3">
+        <a href="{% url 'listing' item.id %}"
+        {% if item.active == 1 %}
+          class="list-group-item list-group-item-action flex-column align-items-start"
+        {% else %}
+          class="list-group-item list-group-item-action flex-column align-items-start bg-dark-red text-white"
+        {% endif %}
+        >
+          <div class="d-flex w-100 justify-content-between">
+            <h5>{{ item.title }}</h5>
+            {% if item.active == 0 %}
+              <p>Closed</p>
+            {% endif %}
+            <small>{{ item.timestamp }}</small>
+          </div>
+        </a>
+    </div>
+    {% endfor %}
+{% endblock %}

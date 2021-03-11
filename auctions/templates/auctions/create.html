@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Add Listing{% endblock %}
+
+{% block body %}
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{ error_message }}
+    </div>
+    {% endif %}
+
+    <h2 class="headers text-dark-red mt-5">Ready to Sell An Item?</h2>
+
+    <form action="{% url 'create' %}" method="POST">
+        {% csrf_token %}
+        {{ create_form|crispy }}
+        <p>* indicates a required field</p>
+        <button type="submit" class="btn btn-outline-dark-red">Submit</button>
+    </form>
+{% endblock %}

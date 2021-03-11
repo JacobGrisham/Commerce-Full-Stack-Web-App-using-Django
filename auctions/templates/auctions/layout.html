@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %} PoshBid {% endblock %}</title>
+
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'auctions/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'auctions/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'auctions/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'auctions/site.webmanifest' %}">
+
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+        <link href="{% block style %} {% endblock %}" rel="stylesheet">
+    </head>
+    <body class="bg-light">
+        <header>
+            <nav class="navbar navbar-expand-md navbar-light bg-white">
+                <img class="navbar-brand logo" src="{% static 'auctions/logo.svg' %}" alt="Logo">
+                <a class="navbar-brand title-thin text-dark-red mr-md-auto" href="landing">poshbid</a>
+                <button class="navbar-toggler border-0" type="button" data-toggle="offcanvas">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse offcanvas-collapse">
+                    <ul class="navbar-nav ml-md-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark-red" href="{% url 'index' %}">Active Listings</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark-red" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categories
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% for gender in genders %}
+                                    <a class="dropdown-item text-dark-red" href="{% url 'category' gender.0 %}">{{ gender.1 }}</a>
+                                {% endfor %}
+                                <div class="dropdown-divider"></div>
+                                {% for category in categories %}
+                                    <a class="dropdown-item text-dark-red" href="{% url 'category' category.0 %}">{{ category.1 }}</a>
+                                {% endfor %}
+                            </div>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown mr-5">
+                                <a class="nav-link dropdown-toggle text-dark-red" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                My Account
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <div class="dropdown-item disabled" href="#">Signed in as <strong>{{ user.username }}</strong></div>
+                                    <a class="dropdown-item text-dark-red" href="{% url 'logout' %}">Log Out</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-dark-red" href="{% url 'watchlist' %}">My Watchlist<span class="badge bg-dark-red ml-2 text-white">{{ watchlist }}</span></a>
+                                    <a class="dropdown-item text-dark-red" href="{% url 'bids' %}">My Bids<span class="badge bg-dark-red ml-2 text-white">2</span></a>
+                                    <a class="dropdown-item text-dark-red" href="{% url 'inventory' %}">My Listings<span class="badge bg-dark-red ml-2 text-white">{{ total_items }}</span></a>
+                                    <a class="dropdown-item text-dark-red" href="{% url 'create' %}">Add Listing</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link text-dark-red" href="{% url 'login' %}">Log In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark-red" href="{% url 'register' %}">Register</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main role="main" class="container">
+            {% block body %}
+            {% endblock %}
+        </main>
+
+    </body>
+
+    <!-- Bootstrap 4 Javascript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{% static 'auctions/offcanvas.js' %}"></script>
+    {% block script %}{% endblock %}
+</html>

@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block title %} Login {% endblock %}
+
+{% block style %} {% static 'auctions/login.css' %} {% endblock %}
+
+{% block body %}
+
+    <div class="login-container">
+        <form class="form-signin needs-validation" novalidate action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="text-center mb-4">
+                <img class="mb-4" src="{% static 'auctions/logo.svg' %}" alt="Logo" width="72" height="72">
+                <h1 class="h3 mb-3 title-thin text-dark-red">poshbid</h1>
+            </div>
+
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+            {% endif %}
+    
+            <div class="form-label-group">
+                <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username" required autofocus>
+                <label for="inputUsername">Username</label>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">
+                    Please provide username.
+                </div>
+                <small><a href="#">Forgot Username?</a></small>
+            </div>
+    
+            <div class="form-label-group">
+                <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
+                <label for="inputPassword">Password</label>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">
+                    Please provide password.
+                </div>
+                <small><a href="#">Forgot Password?</a></small>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+
+            <div class="form-label-group">
+                <input class="btn bg-dark-red btn-lg btn-block text-white" type="submit" value="Login">
+            </div>
+
+            <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </form>
+    </div>
+  
+{% endblock %}
+
+{% block script %}<script src="{% static 'auctions/register.js' %}"></script>{% endblock %}
